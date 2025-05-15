@@ -47,7 +47,10 @@ namespace AlgorithmLib
         /// Sorterar listan med hjälp av Quick Sort.
         /// </summary>
         /// <param name="collection">Listan som ska sorteras.</param>
-        void QuickSort(IList<T> collection);
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        void QuickSort(IList<T> collection, int start, int end);
+        
   
     }
 }
