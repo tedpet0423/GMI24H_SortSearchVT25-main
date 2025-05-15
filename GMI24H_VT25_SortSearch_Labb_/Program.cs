@@ -39,29 +39,41 @@ namespace GMI24H_VT25_SortSearch_Labb_
             
             List<DateTime> timestamps = logs.Select(entry => entry.Timestamp).ToList();
             
-            //Console.WriteLine($"Totalt antal rader inlästa: {logs.Count}");
-            //TimeSpan avgTime = new TimeSpan(0);
-            //
-            //for (int i = 0; i < 100; i++)
-            //{
-            //    List<DateTime> tempList = timestamps;
-            //    Stopwatch sw = Stopwatch.StartNew();
-            //    sorter.BubbleSort(tempList);
-            //    sw.Stop();
-            //    TimeSpan elapsedTime = sw.Elapsed;
-            //    avgTime += elapsedTime;  
-            //}
-            //
-            //Console.WriteLine((avgTime.TotalMilliseconds/100));
-            testSorter.QuickSort(intArr, 0, 0);
-            sorter.QuickSort(timestamps, 0,0);
+            List<DateTime> sortedTimestamps = new List<DateTime>(timestamps);
+            sorter.BubbleSort(sortedTimestamps);
             
+            Console.WriteLine($"Totalt antal rader inlästa: {logs.Count}");
+            TimeSpan avgTime = new TimeSpan(0);
             
-            Console.WriteLine("förhandsvisning av sorterad data:");
-            foreach (var i in intArr.Take(5))
+            for (int i = 0; i < 100; i++)
             {
-                Console.WriteLine(i);
+
+              Console.WriteLine($"Processing iteration {i + 1}/100 ({i + 1}% complete)");
+              List<DateTime> tempList = timestamps; // byt ut denna till sortedTimestamps imorgon
+              
+              Stopwatch sw = Stopwatch.StartNew();
+              sorter.InsertionSort(tempList);
+              sw.Stop();
+              
+              TimeSpan elapsedTime = sw.Elapsed;
+              avgTime += elapsedTime;
+                
+                
+              //Console.WriteLine($"QuickSort: {elapsedTime.TotalMilliseconds} ms");
+              //Console.Clear();
             }
+            
+            Console.WriteLine((avgTime.TotalMilliseconds/100));
+            //testSorter.QuickSort(intArr, 0, 0);
+            //sorter.QuickSort(timestamps, 0,0);
+            
+            
+            //Console.WriteLine("förhandsvisning av sorterad data:");
+            //foreach (var i in intArr.Take(5))
+            //{
+            //    Console.WriteLine(i);
+            //}
+            
             Console.WriteLine("förhandsvisning av sorterad data:");
             foreach (var timestamp in timestamps.Take(5))
             {
