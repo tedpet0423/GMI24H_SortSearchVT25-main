@@ -13,6 +13,7 @@ namespace GMI24H_VT25_SortSearch_Labb_
             const int numberOfPosts = 1000;
             const int seed = 123;
             int[] intArr = new[] { 9, 7, 10, 3, 2 };
+            int fakeIndex =  numberOfPosts - 1;
             var generator = new RandomLogGenerator();
             var logs = generator.GenerateLogs(numberOfPosts, seed).ToList();
 
@@ -41,44 +42,56 @@ namespace GMI24H_VT25_SortSearch_Labb_
             List<DateTime> timestamps = logs.Select(entry => entry.Timestamp).ToList();
             List<string> ipAdresses = logs.Select(entry => entry.IpAddress).ToList();
 
-            string testIp = "192.168.0.666";
-            //List<DateTime> sortedTimestamps = new List<DateTime>(timestamps);
-            //sorter.BubbleSort(sortedTimestamps);
+            string testIp = "999.999.999.999";
+            
+            List<DateTime> sortedTimestamps = new List<DateTime>(timestamps);
+            ipAdresses[fakeIndex] = testIp;
+            sorter2.MergeSort(ipAdresses);
 
-            ipAdresses[800] = testIp;
-            sorter2.QuickSort(ipAdresses, 0, ipAdresses.Count - 1);
+            int index = 1; 
             
-            int index = searcher.MonteCarloSearch(ipAdresses, testIp);
             
-            Console.WriteLine(index);
-            Console.WriteLine(ipAdresses[index]);
+            //Console.WriteLine(index);
             
-            Console.ReadKey();
-            
+            //Console.WriteLine(ipAdresses[index]);
+
+
+            //Console.ReadKey();
             
             Console.WriteLine($"Totalt antal rader inlästa: {logs.Count}");
             TimeSpan avgTime = new TimeSpan(0);
+            //sorter.QuickSort(timestamps, 0, timestamps.Count - 1 );
+            int checkIndex = 0;
             
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 10000; i++)
             {
 
               Console.WriteLine($"Processing iteration {i + 1}/100 ({i + 1}% complete)");
-              List<DateTime> tempList = new List<DateTime>(timestamps); // Create a fresh copy              
               Stopwatch sw = Stopwatch.StartNew();
-              sorter.MergeSort(tempList);
+              index = searcher.LasVegasSearch(ipAdresses, testIp);
               sw.Stop();
+              
               
               TimeSpan elapsedTime = sw.Elapsed;
               avgTime += elapsedTime;
-                
+              
+              if (ipAdresses[index] != testIp)
+              {
+                  checkIndex++;
+              }
+              
+             
                 
               //Console.WriteLine($"QuickSort: {elapsedTime.TotalMilliseconds} ms");
               Console.Clear();
             }
             
             Console.WriteLine((avgTime.TotalMilliseconds/100) + " ms");
-            testSorter.MergeSort(intArr);
-            sorter.MergeSort(timestamps);
+            Console.WriteLine($"Antal missar: {checkIndex}");
+            Console.WriteLine((index));
+            
+            //testSorter.MergeSort(intArr);
+            //sorter.MergeSort(timestamps);
             
             
             //Console.WriteLine("förhandsvisning av sorterad data:");

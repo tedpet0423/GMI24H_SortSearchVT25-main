@@ -173,18 +173,8 @@ namespace AlgorithmLib
             Random random1 = new Random();
             
             int randomIndex1 = random1.Next(0, collection.Count);
-            int randomIndex2 = random1.Next(0, collection.Count);
-            int randomIndex3 = random1.Next(0, collection.Count);
-            
-            if (collection[randomIndex1].Equals(target))
-            {
-                return randomIndex1;
-            }
-            if(collection[randomIndex2].Equals(target))
-            {
-                return randomIndex2;
-            }
-            return randomIndex3;
+         
+            return randomIndex1;
         }
     }
 }
