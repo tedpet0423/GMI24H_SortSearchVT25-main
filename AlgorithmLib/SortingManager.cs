@@ -68,7 +68,7 @@ namespace AlgorithmLib
             Merge(leftC, rightC, collection);
         }
 
-        public void Merge(IList<T> leftC, IList<T> rigtC ,IList<T> collection)
+        private void Merge(IList<T> leftC, IList<T> rigtC ,IList<T> collection)
         {
             int leftSize = collection.Count / 2;
             int rightSize = collection.Count - leftSize;
@@ -141,12 +141,6 @@ namespace AlgorithmLib
         /// <param name="end"></param>
         public void QuickSort(IList<T> collection, int start, int end)
         {
-            if (start == 0 && end == 0)
-            {
-                start = 0;
-                end = collection.Count - 1; 
-            }
-            
             if (start >= end)
             {
                 return;
@@ -165,7 +159,7 @@ namespace AlgorithmLib
 
             for (int j = start; j <= end - 1; j++)
             {
-                if (collection[j].CompareTo(pivot) == -1)
+                if (collection[j].CompareTo(pivot) <= 0)
                 {
                     i++;
                     (collection[i], collection[j]) = (collection[j], collection[i]);

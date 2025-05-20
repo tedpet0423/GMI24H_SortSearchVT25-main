@@ -10,7 +10,7 @@ namespace GMI24H_VT25_SortSearch_Labb_
         static void Main(string[] args)
         {
             //Här är kod som kan användas om man vill jobba med dataströmmar (som ligger i Generator-katalogen och skapas som ström utifrån en given seed). 
-            const int numberOfPosts = 100000;
+            const int numberOfPosts = 1000;
             const int seed = 123;
             int[] intArr = new[] { 9, 7, 10, 3, 2 };
             var generator = new RandomLogGenerator();
@@ -28,6 +28,7 @@ namespace GMI24H_VT25_SortSearch_Labb_
             //Eftersom vi gjort våra Sorting- och SearchingManager-klasserna generiska (<T>) behöver vi även ange vilken typ av data det
             //är som vi vill sortera eller söka efter. Vi anger datatyp i "diamanten" <>.
             var sorter = new SortingManager<DateTime>();
+            var sorter2 = new SortingManager<string>();
             var searcher = new SearchingManager<string>();
             var testSorter = new SortingManager<int>();
 
@@ -38,9 +39,22 @@ namespace GMI24H_VT25_SortSearch_Labb_
             //Vi använder LINQ för att selektera ut ip-adress-propertyn från varje enskilt logentry-post i logs-listan. 
             
             List<DateTime> timestamps = logs.Select(entry => entry.Timestamp).ToList();
+            List<string> ipAdresses = logs.Select(entry => entry.IpAddress).ToList();
+
+            string testIp = "192.168.0.666";
+            //List<DateTime> sortedTimestamps = new List<DateTime>(timestamps);
+            //sorter.BubbleSort(sortedTimestamps);
+
+            ipAdresses[800] = testIp;
+            sorter2.QuickSort(ipAdresses, 0, ipAdresses.Count - 1);
             
-            List<DateTime> sortedTimestamps = new List<DateTime>(timestamps);
-            sorter.BubbleSort(sortedTimestamps);
+            int index = searcher.MonteCarloSearch(ipAdresses, testIp);
+            
+            Console.WriteLine(index);
+            Console.WriteLine(ipAdresses[index]);
+            
+            Console.ReadKey();
+            
             
             Console.WriteLine($"Totalt antal rader inlästa: {logs.Count}");
             TimeSpan avgTime = new TimeSpan(0);
@@ -49,10 +63,9 @@ namespace GMI24H_VT25_SortSearch_Labb_
             {
 
               Console.WriteLine($"Processing iteration {i + 1}/100 ({i + 1}% complete)");
-              List<DateTime> tempList = timestamps; // byt ut denna till sortedTimestamps imorgon
-              
+              List<DateTime> tempList = new List<DateTime>(timestamps); // Create a fresh copy              
               Stopwatch sw = Stopwatch.StartNew();
-              sorter.InsertionSort(tempList);
+              sorter.MergeSort(tempList);
               sw.Stop();
               
               TimeSpan elapsedTime = sw.Elapsed;
@@ -60,12 +73,12 @@ namespace GMI24H_VT25_SortSearch_Labb_
                 
                 
               //Console.WriteLine($"QuickSort: {elapsedTime.TotalMilliseconds} ms");
-              //Console.Clear();
+              Console.Clear();
             }
             
-            Console.WriteLine((avgTime.TotalMilliseconds/100));
-            //testSorter.QuickSort(intArr, 0, 0);
-            //sorter.QuickSort(timestamps, 0,0);
+            Console.WriteLine((avgTime.TotalMilliseconds/100) + " ms");
+            testSorter.MergeSort(intArr);
+            sorter.MergeSort(timestamps);
             
             
             //Console.WriteLine("förhandsvisning av sorterad data:");
